@@ -11,6 +11,7 @@ import org.springframework.context.annotation.FilterType;
 		includeFilters = {
 				@ComponentScan.Filter(type = FilterType.ANNOTATION, value = {ApplicationService.class})
 		})
+//@EnableSwagger2
 public class ApiApplication {
 
 	public static void main(String[] args) {

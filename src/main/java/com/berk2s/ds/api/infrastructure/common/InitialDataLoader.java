@@ -1,4 +1,4 @@
-package com.berk2s.ds.api.infrastructure.bootstrap;
+package com.berk2s.ds.api.infrastructure.common;
 
 import com.berk2s.ds.api.infrastructure.user.jpa.RoleEntity;
 import com.berk2s.ds.api.infrastructure.user.jpa.RoleJPARepository;

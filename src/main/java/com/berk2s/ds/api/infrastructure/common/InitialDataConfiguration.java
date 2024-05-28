@@ -1,4 +1,4 @@
-package com.berk2s.ds.api.infrastructure.bootstrap;
+package com.berk2s.ds.api.infrastructure.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

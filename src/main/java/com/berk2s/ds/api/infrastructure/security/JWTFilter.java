@@ -31,7 +31,9 @@ public class JWTFilter extends OncePerRequestFilter {
     private final SecurityUserDetailsService securityUserDetailsService;
 
     private final List<String> excludedUrls = List.of(
-            AuthController.ENDPOINT
+            AuthController.ENDPOINT,
+            "/swagger-ui",
+            "/api-docs"
     );
 
     @Override
@@ -98,6 +100,6 @@ public class JWTFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        return excludedUrls.stream().anyMatch(skipUrl -> request.getRequestURI().startsWith(skipUrl));
+        return excludedUrls.stream().anyMatch(skipUrl -> request.getRequestURI().startsWith(skipUrl) || request.getRequestURI().contains(skipUrl));
     }
 }

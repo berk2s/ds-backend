@@ -1,6 +1,6 @@
 package com.berk2s.ds.api.infrastructure.security;
 
-import com.berk2s.ds.api.infrastructure.shared.ResourceNotFoundException;
+import com.berk2s.ds.api.infrastructure.common.ResourceNotFoundException;
 import com.berk2s.ds.api.infrastructure.user.jpa.UserJPARepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

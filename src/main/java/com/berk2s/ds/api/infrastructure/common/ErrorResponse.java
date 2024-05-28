@@ -1,4 +1,4 @@
-package com.berk2s.ds.api.infrastructure.shared;
+package com.berk2s.ds.api.infrastructure.common;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
