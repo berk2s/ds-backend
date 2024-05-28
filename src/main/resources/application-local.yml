@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:ds-api-db
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    properties:
+      hibernate:
+        format_sql: false
+    show-sql: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+
+initial-data:
+  users:
+    -
+      firstName: Super
+      lastName: Admin
+      username: admin
+      password: 123456
+      role: SUPER_USER
+  roles:
+    -
+      displayName: SUPER_USER
