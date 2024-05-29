@@ -5,6 +5,8 @@ import com.berk2s.ds.api.infrastructure.employee.dto.EmployeeResponse;
 import com.berk2s.ds.api.infrastructure.employee.persistence.EmployeeJPARepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -14,6 +16,12 @@ import java.util.UUID;
 @Service
 public class EmployeeFacade {
     private final EmployeeJPARepository employeeJPARepository;
+
+    public Page<EmployeeResponse> getEmployees(Pageable pageable) {
+        return employeeJPARepository
+                .findAll(pageable)
+                .map(EmployeeResponse::fromEntity);
+    }
 
     public EmployeeResponse getEmployeeById(UUID id) {
         return EmployeeResponse.fromEntity(employeeJPARepository

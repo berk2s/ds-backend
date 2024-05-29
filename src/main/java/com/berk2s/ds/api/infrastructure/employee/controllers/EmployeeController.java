@@ -5,17 +5,21 @@ import com.berk2s.ds.api.application.employee.usecase.DeleteEmployeeUseCase;
 import com.berk2s.ds.api.application.employee.usecase.DeleteEmployeeUseCaseHandler;
 import com.berk2s.ds.api.application.employee.usecase.UpdateEmployeeUseCaseHandler;
 import com.berk2s.ds.api.domain.shared.EventPublisher;
+import com.berk2s.ds.api.infrastructure.common.PaginationResponse;
 import com.berk2s.ds.api.infrastructure.employee.EmployeeFacade;
 import com.berk2s.ds.api.infrastructure.employee.dto.CreateEmployeeRequest;
 import com.berk2s.ds.api.infrastructure.employee.dto.EmployeeResponse;
 import com.berk2s.ds.api.infrastructure.employee.dto.UpdateEmployeeRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -31,6 +35,26 @@ public class EmployeeController {
     private final DeleteEmployeeUseCaseHandler deleteEmployeeUseCaseHandler;
     private final EventPublisher eventPublisher;
     private final EmployeeFacade employeeFacade;
+
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<PaginationResponse<EmployeeResponse>> getEmployees(Pageable pageable,
+                                                                             @RequestParam Map<String, String> allRequestParams) {
+        var data = employeeFacade.getEmployees(pageable);
+
+        var response = new PaginationResponse<EmployeeResponse>();
+
+        response.setData(data
+                .stream()
+                .peek((i) -> {
+                    mapLinks(UUID.fromString(i.getId()), i);
+                })
+                .toList());
+        response.setPagination(PaginationResponse.fromPage(data));
+
+        mapPaginationLinks(pageable, allRequestParams, response, data);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
     @GetMapping(value = "/{employeeId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeResponse> getEmployee(@PathVariable UUID employeeId) {
@@ -102,5 +126,35 @@ public class EmployeeController {
                 .add(linkTo(methodOn(EmployeeController.class)
                         .getEmployee(employeeId))
                         .withRel("departments"));
+    }
+
+    private static void mapPaginationLinks(Pageable pageable, Map<String, String> allRequestParams, PaginationResponse<EmployeeResponse> response, Page<EmployeeResponse> data) {
+        response
+                .add(linkTo(methodOn(EmployeeController.class)
+                        .getEmployees(pageable, allRequestParams))
+                        .withRel("self"));
+
+        response
+                .add(linkTo(methodOn(EmployeeController.class)
+                        .createEmployee(null))
+                        .withRel("create"));
+
+        response
+                .addIf(!response.getPagination().isLast(), () -> {
+                    allRequestParams.put("page", String.valueOf(data.getPageable().getPageNumber() + 1));
+
+                    return linkTo(methodOn(EmployeeController.class)
+                            .getEmployees(pageable, allRequestParams))
+                            .withRel("next");
+                });
+
+        response
+                .addIf(!response.getPagination().isFirst(), () -> {
+                    allRequestParams.put("page", String.valueOf(data.getPageable().getPageNumber() - 1));
+
+                    return linkTo(methodOn(EmployeeController.class)
+                            .getEmployees(pageable, allRequestParams))
+                            .withRel("prev");
+                });
     }
 }
