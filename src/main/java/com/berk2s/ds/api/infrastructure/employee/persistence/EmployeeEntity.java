@@ -1,15 +1,14 @@
 package com.berk2s.ds.api.infrastructure.employee.persistence;
 
+import com.berk2s.ds.api.domain.department.Department;
 import com.berk2s.ds.api.domain.employee.Employee;
 import com.berk2s.ds.api.domain.employee.EmployeeInformation;
 import com.berk2s.ds.api.domain.employee.EmploymentStatus;
 import com.berk2s.ds.api.domain.shared.LifecycleDate;
+import com.berk2s.ds.api.infrastructure.department.persistence.DepartmentEntity;
 import com.berk2s.ds.api.infrastructure.persistence.LongIdentifierEntity;
 import com.berk2s.ds.api.infrastructure.persistence.UUIDIdentifierEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Index;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +33,10 @@ public class EmployeeEntity extends UUIDIdentifierEntity {
 
     @Column(name = "exit_at", nullable = true)
     private LocalDateTime exitAt;
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id", nullable = true)
+    private DepartmentEntity department;
 
     public Employee toModel() {
         return Employee.attach(getId(), EmployeeInformation.create(firstName, lastName, phoneNumber), EmploymentStatus.create(LocalDateTime.from(getCreatedAt()), exitAt),

@@ -3,6 +3,7 @@ package com.berk2s.ds.api.domain.department;
 import com.berk2s.ds.api.domain.employee.Employee;
 import com.berk2s.ds.api.domain.shared.Aggregate;
 import com.berk2s.ds.api.domain.shared.DomainRuleViolationException;
+import com.berk2s.ds.api.domain.shared.LifecycleDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class Department extends Aggregate {
     private DepartmentInformation information;
     private DepartmentQuota quota;
     private List<Employee> employees;
+    private LifecycleDate lifecycleDate;
 
     private Department(DepartmentInformation information,
                        DepartmentQuota quota,
@@ -48,11 +50,33 @@ public class Department extends Aggregate {
         validateAttached();
     }
 
+    private Department(Long id,
+                       DepartmentInformation information,
+                       DepartmentQuota quota,
+                       List<Employee> employees,
+                       LifecycleDate lifecycleDate) {
+        this.id = id;
+        this.information = information;
+        this.quota = quota;
+        this.employees = employees;
+        this.lifecycleDate = lifecycleDate;
+
+        validateAttached();
+    }
+
     public static Department attach(Long id,
                                     DepartmentInformation information,
                                     DepartmentQuota quota,
                                     List<Employee> employees) {
         return new Department(id, information, quota, employees);
+    }
+
+    public static Department attach(Long id,
+                                    DepartmentInformation information,
+                                    DepartmentQuota quota,
+                                    List<Employee> employees,
+                                    LifecycleDate lifecycleDate) {
+        return new Department(id, information, quota, employees, lifecycleDate);
     }
 
     public static Department create(DepartmentInformation information,
@@ -113,5 +137,7 @@ public class Department extends Aggregate {
             log.warn("Department employees is null.");
             throw new DomainRuleViolationException("department.employees.null");
         }
+
+        checkQuotaAvailability();
     }
 }
