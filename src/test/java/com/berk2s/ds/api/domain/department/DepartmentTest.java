@@ -4,10 +4,12 @@ import com.berk2s.ds.api.domain.employee.Employee;
 import com.berk2s.ds.api.domain.employee.EmployeeInformation;
 import com.berk2s.ds.api.domain.employee.EmploymentStatus;
 import com.berk2s.ds.api.domain.shared.DomainRuleViolationException;
+import com.berk2s.ds.api.domain.shared.LifecycleDate;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,7 +29,7 @@ public class DepartmentTest {
         quota = DepartmentQuota.create(100L);
         employees = new ArrayList<>();
         EmployeeInformation employeeInformation = EmployeeInformation.create(RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(9));
-        employee = Employee.attach(UUID.randomUUID(), employeeInformation, EmploymentStatus.create());
+        employee = Employee.attach(UUID.randomUUID(), employeeInformation, EmploymentStatus.create(), LifecycleDate.create(LocalDateTime.now(), LocalDateTime.now()));
     }
 
     @Test

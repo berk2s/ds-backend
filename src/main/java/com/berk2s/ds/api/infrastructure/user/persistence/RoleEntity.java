@@ -1,4 +1,4 @@
-package com.berk2s.ds.api.infrastructure.user.jpa;
+package com.berk2s.ds.api.infrastructure.user.persistence;
 
 import com.berk2s.ds.api.infrastructure.persistence.LongIdentifierEntity;
 import jakarta.persistence.*;

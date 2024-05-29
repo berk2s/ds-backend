@@ -2,6 +2,7 @@ package com.berk2s.ds.api.domain.employee;
 
 import com.berk2s.ds.api.domain.shared.DomainRuleViolationException;
 import com.berk2s.ds.api.domain.shared.Entity;
+import com.berk2s.ds.api.domain.shared.LifecycleDate;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,13 +24,16 @@ public class Employee extends Entity {
     private UUID id;
     private EmployeeInformation information;
     private EmploymentStatus status;
+    private LifecycleDate lifecycleDate;
 
     private Employee(UUID id,
                      EmployeeInformation information,
-                     EmploymentStatus status) {
+                     EmploymentStatus status,
+                     LifecycleDate lifecycleDate) {
         this.id = id;
         this.information = information;
         this.status = status;
+        this.lifecycleDate = lifecycleDate;
 
         validateAttached();
     }
@@ -55,8 +59,9 @@ public class Employee extends Entity {
 
     public static Employee attach(UUID id,
                                   EmployeeInformation employeeInformation,
-                                  EmploymentStatus employmentStatus) {
-        return new Employee(id, employeeInformation, employmentStatus);
+                                  EmploymentStatus employmentStatus,
+                                  LifecycleDate lifecycleDate) {
+        return new Employee(id, employeeInformation, employmentStatus, lifecycleDate);
     }
 
     private void validateAttached() {

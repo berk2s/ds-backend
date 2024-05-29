@@ -1,4 +1,4 @@
-package com.berk2s.ds.api.infrastructure.user.jpa;
+package com.berk2s.ds.api.infrastructure.user.persistence;
 
 import org.springframework.data.repository.CrudRepository;
 

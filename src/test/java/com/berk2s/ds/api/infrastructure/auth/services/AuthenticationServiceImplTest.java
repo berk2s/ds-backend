@@ -1,8 +1,8 @@
 package com.berk2s.ds.api.infrastructure.auth.services;
 
 import com.berk2s.ds.api.infrastructure.security.SecurityUser;
-import com.berk2s.ds.api.infrastructure.user.jpa.RoleEntity;
-import com.berk2s.ds.api.infrastructure.user.jpa.UserEntity;
+import com.berk2s.ds.api.infrastructure.user.persistence.RoleEntity;
+import com.berk2s.ds.api.infrastructure.user.persistence.UserEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

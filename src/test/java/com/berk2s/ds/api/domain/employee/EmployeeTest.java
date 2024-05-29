@@ -2,9 +2,11 @@ package com.berk2s.ds.api.domain.employee;
 
 import com.berk2s.ds.api.domain.department.EmployeeRemovedFromDepartmentEvent;
 import com.berk2s.ds.api.domain.shared.DomainRuleViolationException;
+import com.berk2s.ds.api.domain.shared.LifecycleDate;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,7 +34,7 @@ class EmployeeTest {
         EmploymentStatus status = EmploymentStatus.create();
 
         // When
-        Employee employee = Employee.attach(id, information, status);
+        Employee employee = Employee.attach(id, information, status, LifecycleDate.create(LocalDateTime.now(), LocalDateTime.now()));
 
         // Then
         assertNotNull(employee);
@@ -60,7 +62,7 @@ class EmployeeTest {
         // When
         DomainRuleViolationException thrown = assertThrows(
                 DomainRuleViolationException.class,
-                () -> Employee.attach(null, information, status)
+                () -> Employee.attach(null, information, status, LifecycleDate.create(LocalDateTime.now(), LocalDateTime.now()))
         );
 
         // Then
@@ -77,7 +79,7 @@ class EmployeeTest {
         // When
         DomainRuleViolationException thrown = assertThrows(
                 DomainRuleViolationException.class,
-                () -> Employee.attach(id, null, status)
+                () -> Employee.attach(id, null, status, LifecycleDate.create(LocalDateTime.now(), LocalDateTime.now()))
         );
 
         // Then
@@ -93,7 +95,7 @@ class EmployeeTest {
         // When
         DomainRuleViolationException thrown = assertThrows(
                 DomainRuleViolationException.class,
-                () -> Employee.attach(id, information, null)
+                () -> Employee.attach(id, information, null, LifecycleDate.create(LocalDateTime.now(), LocalDateTime.now()))
         );
 
         // Then
@@ -106,7 +108,7 @@ class EmployeeTest {
         UUID id = UUID.randomUUID();
         EmployeeInformation information = EmployeeInformation.create(RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5));
         EmploymentStatus status = EmploymentStatus.create();
-        Employee employee = Employee.attach(id, information, status);
+        Employee employee = Employee.attach(id, information, status, LifecycleDate.create(LocalDateTime.now(), LocalDateTime.now()));
 
         // When
         employee.fired();

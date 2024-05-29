@@ -1,9 +1,9 @@
 package com.berk2s.ds.api.infrastructure.common;
 
-import com.berk2s.ds.api.infrastructure.user.jpa.RoleEntity;
-import com.berk2s.ds.api.infrastructure.user.jpa.RoleJPARepository;
-import com.berk2s.ds.api.infrastructure.user.jpa.UserEntity;
-import com.berk2s.ds.api.infrastructure.user.jpa.UserJPARepository;
+import com.berk2s.ds.api.infrastructure.user.persistence.RoleEntity;
+import com.berk2s.ds.api.infrastructure.user.persistence.RoleJPARepository;
+import com.berk2s.ds.api.infrastructure.user.persistence.UserEntity;
+import com.berk2s.ds.api.infrastructure.user.persistence.UserJPARepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
