@@ -137,7 +137,5 @@ public class Department extends Aggregate {
             log.warn("Department employees is null.");
             throw new DomainRuleViolationException("department.employees.null");
         }
-
-        checkQuotaAvailability();
     }
 }

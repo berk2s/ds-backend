@@ -7,6 +7,7 @@ import com.berk2s.ds.api.domain.department.DepartmentInformation;
 import com.berk2s.ds.api.domain.department.DepartmentQuota;
 import com.berk2s.ds.api.domain.department.DepartmentRepository;
 import com.berk2s.ds.api.domain.employee.EmployeeRepository;
+import com.berk2s.ds.api.domain.shared.DomainRuleViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Isolation;
@@ -32,6 +33,11 @@ public class CreateDepartmentUseCaseHandler implements UseCaseHandler<Department
         var quota = DepartmentQuota.create(
                 useCase.getMaximumMember()
         );
+
+        if (useCase.getEmployees().size() > quota.getMaximumMember()) {
+            log.info("The department has been reached to the maximum capacity");
+            throw new DomainRuleViolationException("department.inMaximumCapacity");
+        }
 
         var employees = useCase
                 .getEmployees()
