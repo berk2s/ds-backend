@@ -3,10 +3,7 @@ package com.berk2s.ds.api.domain.employee;
 import com.berk2s.ds.api.domain.shared.DomainRuleViolationException;
 import com.berk2s.ds.api.domain.shared.Entity;
 import com.berk2s.ds.api.domain.shared.LifecycleDate;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Objects;
@@ -16,6 +13,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 @Slf4j
 @Getter
+@Setter
 @ToString
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @NoArgsConstructor(access = PRIVATE)
