@@ -1,6 +1,8 @@
 package com.berk2s.ds.api.infrastructure.employee.controllers;
 
 import com.berk2s.ds.api.application.employee.usecase.CreateEmployeeUseCaseHandler;
+import com.berk2s.ds.api.application.employee.usecase.DeleteEmployeeUseCase;
+import com.berk2s.ds.api.application.employee.usecase.DeleteEmployeeUseCaseHandler;
 import com.berk2s.ds.api.application.employee.usecase.UpdateEmployeeUseCaseHandler;
 import com.berk2s.ds.api.domain.shared.EventPublisher;
 import com.berk2s.ds.api.infrastructure.employee.EmployeeFacade;
@@ -26,6 +28,7 @@ public class EmployeeController {
     public static final String ENDPOINT = "/employees";
     private final CreateEmployeeUseCaseHandler createEmployeeUseCaseHandler;
     private final UpdateEmployeeUseCaseHandler updateEmployeeUseCaseHandler;
+    private final DeleteEmployeeUseCaseHandler deleteEmployeeUseCaseHandler;
     private final EventPublisher eventPublisher;
     private final EmployeeFacade employeeFacade;
 
@@ -67,6 +70,18 @@ public class EmployeeController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @DeleteMapping(value = "/{employeeId}")
+    public ResponseEntity deleteEmployee(@PathVariable UUID employeeId) {
+        var employee = deleteEmployeeUseCaseHandler
+                .execute(DeleteEmployeeUseCase.builder()
+                        .employeeId(employeeId)
+                        .build());
+
+        eventPublisher.publish(employee.pickDomainEvents());
+
+        return ResponseEntity.noContent().build();
+    }
+
     private static void mapLinks(UUID employeeId, EmployeeResponse response) {
         response
                 .add(linkTo(methodOn(EmployeeController.class)
@@ -82,11 +97,6 @@ public class EmployeeController {
                 .add(linkTo(methodOn(EmployeeController.class)
                         .getEmployee(employeeId))
                         .withRel("delete"));
-
-        response
-                .add(linkTo(methodOn(EmployeeController.class)
-                        .getEmployee(employeeId))
-                        .withRel("fire"));
 
         response
                 .add(linkTo(methodOn(EmployeeController.class)

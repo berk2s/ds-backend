@@ -7,4 +7,5 @@ public interface EmployeeRepository {
     Employee save(Employee employee);
     Employee update(Employee employee);
     Employee retrieve(UUID id);
+    void delete(Employee employee);
 }

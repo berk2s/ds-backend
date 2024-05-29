@@ -62,6 +62,17 @@ public class DefaultEmployeeRepository implements EmployeeRepository {
         return getById(id).toModel();
     }
 
+    @Transactional(propagation = Propagation.MANDATORY)
+    @Override
+    public void delete(Employee employee) {
+        var entity = getById(employee.getId());
+
+        employeeJPARepository
+                .delete(entity);
+
+        log.info("Employee has been deleted. [id: {}]", entity.getId());
+    }
+
     private EmployeeEntity getById(UUID id) {
         return employeeJPARepository
                 .findById(id)
