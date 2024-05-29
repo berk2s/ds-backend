@@ -6,6 +6,7 @@ import com.berk2s.ds.api.application.employee.usecase.DeleteEmployeeUseCaseHandl
 import com.berk2s.ds.api.application.employee.usecase.UpdateEmployeeUseCaseHandler;
 import com.berk2s.ds.api.domain.shared.EventPublisher;
 import com.berk2s.ds.api.infrastructure.common.PaginationResponse;
+import com.berk2s.ds.api.infrastructure.department.controllers.DepartmentController;
 import com.berk2s.ds.api.infrastructure.employee.EmployeeFacade;
 import com.berk2s.ds.api.infrastructure.employee.dto.CreateEmployeeRequest;
 import com.berk2s.ds.api.infrastructure.employee.dto.EmployeeResponse;
@@ -20,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -122,10 +124,12 @@ public class EmployeeController {
                         .getEmployee(employeeId))
                         .withRel("delete"));
 
-        response
-                .add(linkTo(methodOn(EmployeeController.class)
-                        .getEmployee(employeeId))
-                        .withRel("departments"));
+        if (!Objects.isNull(response.getDepartment()))
+            response
+                    .getDepartment()
+                    .add(linkTo(methodOn(DepartmentController.class)
+                            .createDepartment(null))
+                            .withRel("self"));
     }
 
     private static void mapPaginationLinks(Pageable pageable, Map<String, String> allRequestParams, PaginationResponse<EmployeeResponse> response, Page<EmployeeResponse> data) {

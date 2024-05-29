@@ -35,6 +35,7 @@ public class DefaultDepartmentRepository implements DepartmentRepository {
                 .forEach((employee -> {
                     var employeeEntity = employeeById(employee.getId());
                     departmentEntity.addEmployee(employeeEntity);
+                    employeeEntity.setDepartment(departmentEntity);
                 }));
 
         return departmentJPARepository.save(departmentEntity).toModel();

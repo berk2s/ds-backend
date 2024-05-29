@@ -33,7 +33,8 @@ public class JWTFilter extends OncePerRequestFilter {
     private final List<String> excludedUrls = List.of(
             AuthController.ENDPOINT,
             "/swagger-ui",
-            "/api-docs"
+            "/api-docs",
+            "/h2-console"
     );
 
     @Override

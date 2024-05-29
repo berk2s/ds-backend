@@ -31,7 +31,7 @@ public class DepartmentEntity extends LongIdentifierEntity {
     @Column(name = "maximum_member_number", nullable = false)
     private Long maximumMember;
 
-    @OneToMany(mappedBy = "department", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "department", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.LAZY)
     private Set<EmployeeEntity> employees = new HashSet<>();
 
     public void addEmployee(EmployeeEntity entity) {

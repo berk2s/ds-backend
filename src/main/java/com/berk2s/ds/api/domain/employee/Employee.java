@@ -22,6 +22,7 @@ public class Employee extends Entity {
     private UUID id;
     private EmployeeInformation information;
     private EmploymentStatus status;
+    private EmployeeDepartment department;
     private LifecycleDate lifecycleDate;
 
     private Employee(UUID id,
@@ -31,6 +32,20 @@ public class Employee extends Entity {
         this.id = id;
         this.information = information;
         this.status = status;
+        this.lifecycleDate = lifecycleDate;
+
+        validateAttached();
+    }
+
+    private Employee(UUID id,
+                     EmployeeInformation information,
+                     EmploymentStatus status,
+                     EmployeeDepartment department,
+                     LifecycleDate lifecycleDate) {
+        this.id = id;
+        this.information = information;
+        this.status = status;
+        this.department = department;
         this.lifecycleDate = lifecycleDate;
 
         validateAttached();
@@ -60,6 +75,14 @@ public class Employee extends Entity {
                                   EmploymentStatus employmentStatus,
                                   LifecycleDate lifecycleDate) {
         return new Employee(id, employeeInformation, employmentStatus, lifecycleDate);
+    }
+
+    public static Employee attach(UUID id,
+                                  EmployeeInformation employeeInformation,
+                                  EmploymentStatus employmentStatus,
+                                  EmployeeDepartment department,
+                                  LifecycleDate lifecycleDate) {
+        return new Employee(id, employeeInformation, employmentStatus, department, lifecycleDate);
     }
 
     private void validateAttached() {
