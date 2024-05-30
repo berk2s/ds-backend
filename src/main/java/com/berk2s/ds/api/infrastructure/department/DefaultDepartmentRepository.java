@@ -41,12 +41,45 @@ public class DefaultDepartmentRepository implements DepartmentRepository {
         return departmentJPARepository.save(departmentEntity).toModel();
     }
 
+    @Override
+    public Department retrieve(Long id) {
+        return departmentById(id).toModel();
+    }
+
+    @Override
+    public Department update(Department department) {
+        var departmentEntity = departmentById(department.getId());
+        departmentEntity.setDisplayName(department.getInformation().getDisplayName());
+        departmentEntity.setType(department.getInformation().getType());
+        departmentEntity.setMaximumMember(department.getQuota().getMaximumMember());
+
+        department
+                .getEmployees()
+                .forEach((employee -> {
+                    var employeeEntity = employeeById(employee.getId());
+
+                    departmentEntity.addEmployee(employeeEntity);
+                    employeeEntity.setDepartment(departmentEntity);
+                }));
+
+        return departmentJPARepository.save(departmentEntity).toModel();
+    }
+
     private EmployeeEntity employeeById(UUID id) {
         return employeeJPARepository
                 .findById(id)
                 .orElseThrow(() -> {
                     log.warn("Given employee with the id does not exists. [id: {}]", id);
                     return new ResourceNotFoundException("employee.notFound");
+                });
+    }
+
+    private DepartmentEntity departmentById(Long id) {
+        return departmentJPARepository
+                .findById(id)
+                .orElseThrow(() -> {
+                    log.warn("Department with given id does not exists. [departmentId: {}]", id);
+                    return new ResourceNotFoundException("department.notFound");
                 });
     }
 }
